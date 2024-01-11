@@ -5,7 +5,7 @@ class Name(Field):
     @staticmethod
     def validate(value):
         if not value:
-            raise ValueError('The name is required')
+            raise ValueError("The name is required")
 
     @Field.value.setter
     def value(self, value: str):

@@ -9,14 +9,18 @@ from .handlers.common.greeting import GreetingHandler
 from .handlers.handler_factory import HandlerFactory
 
 from .storages.csv_storage import CSVStorage
-from .serializers.address_book.address_book_csv_serializer import AddressBookCSVSerializer
+from .serializers.address_book.address_book_csv_serializer import (
+    AddressBookCSVSerializer,
+)
 from .serializers.notes.notes_csv_serializer import NotesCSVSerializer
 
 from .console.console import Console
 
 STORAGE_PATH = Path(".") / Path("databases")
 
-ADDRESS_BOOK_FIELDS = ["name","birthday",
+ADDRESS_BOOK_FIELDS = [
+    "name",
+    "birthday",
     "address",
     "phones",
     "mail",

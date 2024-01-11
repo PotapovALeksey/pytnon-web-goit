@@ -6,13 +6,15 @@ from .notes_abstract import NotesAbstract
 
 class NotesRemoveNoteHandler(NotesAbstract):
     def execute(self):
-        value = Console.input('Input ID: ')
+        value = Console.input("Input ID: ")
 
         result = self.notes.find(value)
 
         if result is not None:
-           self.notes.delete(value)
-           self.storage.update(self.notes.data.values())
-           return Console.print_table(f'Remove note', note_titles, [get_notes_row(result)])
+            self.notes.delete(value)
+            self.storage.update(self.notes.data.values())
+            return Console.print_table(
+                f"Remove note", note_titles, [get_notes_row(result)]
+            )
 
-        Console.print_error(f'There is no any notes named: {value}')
+        Console.print_error(f"There is no any notes named: {value}")

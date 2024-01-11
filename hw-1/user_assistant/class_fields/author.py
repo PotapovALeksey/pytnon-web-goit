@@ -5,7 +5,7 @@ class Author(Field):
     @staticmethod
     def validate(value):
         if not value:
-            raise ValueError('The author is required')
+            raise ValueError("The author is required")
 
     @Field.value.setter
     def value(self, value: str):

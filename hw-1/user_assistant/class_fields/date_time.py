@@ -4,7 +4,7 @@ from .field import Field
 
 
 class DateTime(Field):
-    DATE_TIME_FORMAT = '%d.%m.%Y %H:%M:%S'
+    DATE_TIME_FORMAT = "%d.%m.%Y %H:%M:%S"
 
     def __str__(self):
         return self.value.strftime(self.DATE_TIME_FORMAT)
@@ -12,7 +12,7 @@ class DateTime(Field):
     @staticmethod
     def validate(value: datetime):
         if not isinstance(value, datetime):
-            raise ValueError('The datetime is incorrect')
+            raise ValueError("The datetime is incorrect")
 
     @Field.value.setter
     def value(self, value: datetime):

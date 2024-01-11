@@ -10,11 +10,15 @@ class Notes(UserDict):
         self.data[note.id.value] = note
 
     def sort_by_tags(self):
-        sorted_notes = sorted(self.data.values(), key=lambda note: ','.join(note.str_tags))
+        sorted_notes = sorted(
+            self.data.values(), key=lambda note: ",".join(note.str_tags)
+        )
         return sorted_notes
-    
+
     def sort_by_author(self):
-        sorted_notes = sorted(self.data.values(), key=lambda note: ','.join(note.str_author.casefold()))
+        sorted_notes = sorted(
+            self.data.values(), key=lambda note: ",".join(note.str_author.casefold())
+        )
         return sorted_notes
 
     def delete(self, id: str):
@@ -23,17 +27,17 @@ class Notes(UserDict):
     def find(self, id: str):
         return self.data.get(id, None)
 
-    
     def search_by_tags(self, tag_name: str):
-        return list(filter(lambda note: tag_name.casefold() in note.str_tags, self.data.values()))
-
+        return list(
+            filter(
+                lambda note: tag_name.casefold() in note.str_tags, self.data.values()
+            )
+        )
 
     def search_by_author(self, author: str):
-        return list(filter(lambda note: note.str_author.casefold() == author.casefold(), self.data.values()))
-
-
-    
-
-
-
-
+        return list(
+            filter(
+                lambda note: note.str_author.casefold() == author.casefold(),
+                self.data.values(),
+            )
+        )

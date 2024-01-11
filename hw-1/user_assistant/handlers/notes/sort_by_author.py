@@ -8,4 +8,8 @@ class NotesSortByAuthorHandler(NotesAbstract):
     def execute(self):
         result_sort = self.notes.sort_by_author()
 
-        Console.print_table(f'Sorted notes by author: ', note_titles, list(map(get_notes_row,result_sort)))
+        Console.print_table(
+            f"Sorted notes by author: ",
+            note_titles,
+            list(map(get_notes_row, result_sort)),
+        )

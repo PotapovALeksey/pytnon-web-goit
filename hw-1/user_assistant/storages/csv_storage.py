@@ -7,7 +7,13 @@ from user_assistant.serializers.serializer import Serializer
 
 
 class CSVStorage(Storage):
-    def __init__(self, dir_path: Path, filename: str, serializer: Type[Serializer], fieldnames: [str]):
+    def __init__(
+        self,
+        dir_path: Path,
+        filename: str,
+        serializer: Type[Serializer],
+        fieldnames: [str],
+    ):
         if not dir_path.exists():
             dir_path.mkdir()
 
@@ -21,8 +27,7 @@ class CSVStorage(Storage):
         if not self.path.exists():
             return data
 
-
-        with open(self.path, 'r', newline='') as file:
+        with open(self.path, "r", newline="") as file:
             reader = DictReader(file, fieldnames=self.fieldnames)
 
             for row in reader:
@@ -34,7 +39,7 @@ class CSVStorage(Storage):
         return data
 
     def update(self, records):
-        with open(self.path, 'w', newline='') as file:
+        with open(self.path, "w", newline="") as file:
             writer = DictWriter(file, fieldnames=self.fieldnames)
             writer.writeheader()
 
@@ -43,7 +48,6 @@ class CSVStorage(Storage):
 
     def is_header_row(self, row):
         for field_name in self.fieldnames:
-
             if row[field_name] != field_name:
                 return False
 

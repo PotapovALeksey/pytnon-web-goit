@@ -8,15 +8,27 @@ from datetime import date, datetime
 
 
 class AddressBookRecord:
-    def __init__(self, name: Name, birthday: Date, mail: Mail, address: Address,
-                    phones: list[Phone] = [], created_at=None, updated_at=None):
+    def __init__(
+        self,
+        name: Name,
+        birthday: Date,
+        mail: Mail,
+        address: Address,
+        phones: list[Phone] = [],
+        created_at=None,
+        updated_at=None,
+    ):
         self.name = name
         self.birthday = birthday
         self.phones = phones
         self.mail = mail
         self.address = address
-        self.created_at = created_at if created_at is not None else DateTime(datetime.now())
-        self.updated_at = updated_at if updated_at is not None else DateTime(datetime.now())
+        self.created_at = (
+            created_at if created_at is not None else DateTime(datetime.now())
+        )
+        self.updated_at = (
+            updated_at if updated_at is not None else DateTime(datetime.now())
+        )
 
     def __str__(self):
         return f"Contact name: {self.name.value}, birthday: {self.birthday}, email: {self.mail}, address: {self.address}, phones: {'; '.join(p.value for p in self.phones)}"
@@ -53,13 +65,13 @@ class AddressBookRecord:
                 return current_phone
 
         return None
-    
+
     def edit_name(self, new_name: Name):
         self.name = new_name
         self.update_updated_at()
 
         return self.name
-    
+
     def edit_birthday(self, new_birthday: Date):
         self.birthday = new_birthday
         self.update_updated_at()
@@ -71,7 +83,7 @@ class AddressBookRecord:
         self.update_updated_at()
 
         return self.mail
-    
+
     def edit_address(self, new_address: Address):
         self.address = new_address
         self.update_updated_at()
@@ -80,8 +92,11 @@ class AddressBookRecord:
 
     def days_to_birthday(self):
         today = date.today()
-        year = today.year if today <= self.birthday.value.replace(year=today.year) else today.year + 1
+        year = (
+            today.year
+            if today <= self.birthday.value.replace(year=today.year)
+            else today.year + 1
+        )
         closest_birthday = self.birthday.value.replace(year=year)
 
         return (closest_birthday - today).days
-

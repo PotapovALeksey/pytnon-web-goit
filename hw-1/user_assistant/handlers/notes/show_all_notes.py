@@ -6,4 +6,6 @@ from .notes_abstract import NotesAbstract
 
 class NotesShowAllNotesHandler(NotesAbstract):
     def execute(self):
-        Console.print_table('All notes', note_titles, list(map(get_notes_row, self.notes.data.values())))
+        Console.print_table(
+            "All notes", note_titles, list(map(get_notes_row, self.notes.data.values()))
+        )

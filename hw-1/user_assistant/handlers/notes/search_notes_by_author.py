@@ -7,8 +7,11 @@ from .notes_abstract import NotesAbstract
 
 
 class NotesSearchNotesByAuthorHandler(NotesAbstract):
-
     def execute(self):
-        author = input_value('author', Author)
+        author = input_value("author", Author)
         result_notes = self.notes.search_by_author(author.value)
-        Console.print_table(f"Notes found for tag: {author}", note_titles, list(map(get_notes_row,result_notes)))
+        Console.print_table(
+            f"Notes found for tag: {author}",
+            note_titles,
+            list(map(get_notes_row, result_notes)),
+        )
