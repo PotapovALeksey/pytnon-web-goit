@@ -38,7 +38,6 @@ handlers = {
     CommandEnum.ADD_PHONE.value: AddressBookAddPhoneHandler,
     CommandEnum.EDIT_PHONE.value: AddressBookEditPhoneHandler,
     CommandEnum.REMOVE_PHONE.value: AddressBookRemovePhoneHandler,
-
     CommandEnum.ADD_NOTE.value: NotesAddNoteHandler,
     CommandEnum.FIND_NOTE.value: NotesFindNoteHandler,
     CommandEnum.EDIT_NOTE.value: NotesEditNoteHandler,
@@ -50,7 +49,6 @@ handlers = {
     CommandEnum.SORT_BY_AUTHOR.value: NotesSortByAuthorHandler,
     CommandEnum.REMOVE_TAGS.value: NotesRemoveTagsHandler,
     CommandEnum.ADD_TAGS.value: NotesAddTagsHandlerHandler,
-
     CommandEnum.SORT_FILES.value: SortFileHandler,
     CommandEnum.EXIT.value: ExitHandler,
     CommandEnum.CLOSE.value: ExitHandler,
@@ -58,7 +56,7 @@ handlers = {
 }
 
 
-class HandlerFactory():
+class HandlerFactory:
     @staticmethod
     def create_handler(command: str):
         if command in handlers:

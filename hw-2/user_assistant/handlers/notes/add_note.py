@@ -11,12 +11,12 @@ from .notes_abstract import NotesAbstract
 
 class NotesAddNoteHandler(NotesAbstract):
     def execute(self):
-        author = input_value('author',Author)
-        text = input_value('text',Text)
-        tag = input_value('tag',Tag)
+        author = input_value("author", Author)
+        text = input_value("text", Text)
+        tag = input_value("tag", Tag)
 
         note_record = NoteRecord(author=author, text=text, tags=[tag])
         self.notes.add_note(note_record)
         self.storage.update(self.notes.data.values())
 
-        Console.print_table(f'Created note', note_titles, [get_notes_row(note_record)])
+        Console.print_table(f"Created note", note_titles, [get_notes_row(note_record)])

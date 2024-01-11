@@ -6,10 +6,8 @@ WORKDIR $APP_HOME
 
 COPY . .
 
-RUN pip install poetry
-
-RUN poetry install --without dev
+RUN pip install -r requirements.txt
 
 EXPOSE 5000
 
-ENTRYPOINT ["poetry", "run", "python", "main.py"]
+ENTRYPOINT ["python", "main.py"]
