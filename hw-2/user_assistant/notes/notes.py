@@ -27,7 +27,7 @@ class Notes(UserDict):
     def find(self, id: str):
         return self.data.get(id, None)
 
-    def search_by_tags(self, tag_name: str):
+    def search_by_tags(self, tag_name):
         return list(
             filter(
                 lambda note: tag_name.casefold() in note.str_tags, self.data.values()

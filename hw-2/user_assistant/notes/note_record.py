@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 
 from user_assistant.class_fields.text import Text
 from user_assistant.class_fields.author import Author
@@ -12,7 +13,7 @@ class NoteRecord:
         self,
         author: Author,
         text: Text,
-        tags: [Tag],
+        tags: List[Tag],
         note_id=None,
         created_at=None,
         updated_at=None,
@@ -29,10 +30,16 @@ class NoteRecord:
         )
 
     def __str__(self):
-        return f"Note author: {self.author.value}, text: {self.text.value}, tags: {'; '.join(p.value for p in self.tags)}, created_at: {self.created_at}, id: ${self.id.value}"
+        return (
+            f"Note author: {self.author.value}, text: {self.text.value}, "
+            f"tags: {'; '.join(p.value for p in self.tags)}, created_at: {self.created_at}, id: ${self.id.value}"
+        )
 
     def __repr__(self):
-        return f"Note author: {self.author.value}, text: {self.text.value}, tags: {'; '.join(p.value for p in self.tags)}, created_at: {self.created_at}, id: ${self.id.value}"
+        return (
+            f"Note author: {self.author.value}, text: {self.text.value}, "
+            f"tags: {'; '.join(p.value for p in self.tags)}, created_at: {self.created_at}, id: ${self.id.value}"
+        )
 
     @property
     def str_tags(self):

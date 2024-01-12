@@ -2,7 +2,7 @@ from .field import Field
 
 
 class Tag(Field):
-    def __eq__(self, other: str):
+    def __eq__(self, other: str) -> bool:
         return self.value == other
 
     @Field.value.setter
