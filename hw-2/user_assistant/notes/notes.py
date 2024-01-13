@@ -21,11 +21,11 @@ class Notes(UserDict):
         )
         return sorted_notes
 
-    def delete(self, id: str):
-        return self.data.pop(id, None)
-
     def find(self, id: str):
         return self.data.get(id, None)
+
+    def delete(self, id: str):
+        return self.data.pop(id, None)
 
     def search_by_tags(self, tag_name):
         return list(
