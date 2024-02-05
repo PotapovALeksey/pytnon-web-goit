@@ -2,6 +2,7 @@ import asyncio
 import argparse
 from service.exchange_rate import ExchangeRate
 import logging
+from constant import MAX_AVAILABLE_DAYS
 
 parser = argparse.ArgumentParser(
     description="App for getting currency exchange information"
@@ -26,7 +27,7 @@ async def main():
 
 
 if __name__ == "__main__":
-    if days <= 10:
+    if days <= MAX_AVAILABLE_DAYS:
         asyncio.run(main())
     else:
         logging.error("Number of days must be less than 10")

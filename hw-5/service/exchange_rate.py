@@ -47,7 +47,7 @@ class ExchangeRate:
         return results
 
     async def get_archived_exchange_rates(self, days: int, currencies: Tuple[str]):
-        exchange_dates = [self.get_exchange_date(day) for day in range(1, days + 1)]
+        exchange_dates = [self.get_exchange_date(day) for day in range(0, days)]
 
         responses = []
 
