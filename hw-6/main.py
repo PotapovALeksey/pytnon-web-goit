@@ -20,7 +20,7 @@ if __name__ == "__main__":
         grades = Grades()
         subjects = Subjects()
 
-        # students.query_1()
+        students.query_1()
         # students.query_2(3)
         # grades.query_3(3)
         # grades.query_4()
