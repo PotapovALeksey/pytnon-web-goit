@@ -1,7 +1,11 @@
 import sys
 import asyncio
 
-from database_service.queries import get_quotes_by_tags, get_quotes_by_tag, get_quotes_by_author_name
+from database_service.queries import (
+    get_quotes_by_tags,
+    get_quotes_by_tag,
+    get_quotes_by_author_name,
+)
 from scraping_service.scraping import run_scraping
 from load_data_to_cloud import load_data_to_cloud
 
