@@ -70,7 +70,7 @@ async def scrape_quotes_and_author_urls(session: asyncio, page_url=""):
                     else None
                 )
 
-                if next_page_url is not None and next_page_url != "/page/4/":
+                if next_page_url is not None:
                     next_quotes, next_author_urls = await scrape_quotes_and_author_urls(
                         session, next_page_url
                     )
