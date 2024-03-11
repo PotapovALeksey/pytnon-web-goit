@@ -23,10 +23,15 @@ def get_quotes(soup: BeautifulSoup):
     local_quotes = soup.findAll("div", {"class": "quote"})
 
     for quote in local_quotes:
+        author_name = quote.find("small", {"class": "author"}).text.strip()
+
+        if author_name.startswith('Alexandre Dumas'):
+            author_name = 'Alexandre Dumas-fils'
+
         quotes.append(
             {
                 "quote": quote.find("span", {"class": "text"}).text.strip(),
-                "author": quote.find("small", {"class": "author"}).text.strip(),
+                "author": author_name,
                 "tags": [
                     tag.text.strip() for tag in quote.findAll("a", {"class": "tag"})
                 ],

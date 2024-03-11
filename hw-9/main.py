@@ -34,9 +34,9 @@ def cli_handler(input: str):
 
 
 if __name__ == "__main__":
-    # asyncio.run(run_scraping())
+    asyncio.run(run_scraping())
 
-    # load_data_to_cloud()
+    load_data_to_cloud()
 
     while True:
         input_value = input("Enter query: ")

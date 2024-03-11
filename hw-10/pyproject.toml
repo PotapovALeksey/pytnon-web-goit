@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "hw-10"
+version = "0.1.0"
+description = ""
+authors = ["PotapovALeksey <37796979+PotapovALeksey@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.7"
+django = "5.0.3"
+psycopg2-binary = "^2.9.9"
+pymongo = "^4.6.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
