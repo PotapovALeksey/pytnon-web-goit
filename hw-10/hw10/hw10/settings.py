@@ -77,12 +77,12 @@ WSGI_APPLICATION = "hw10.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": 'django.db.backends.postgresql_psycopg2',
-        "NAME": 'hw-10',
-        "USER": 'root',
-        "PASSWORD": 'root',
-        "HOST": 'localhost',
-        "PORT": '5432',
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "hw-10",
+        "USER": "root",
+        "PASSWORD": "root",
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
 

@@ -25,8 +25,8 @@ def get_quotes(soup: BeautifulSoup):
     for quote in local_quotes:
         author_name = quote.find("small", {"class": "author"}).text.strip()
 
-        if author_name.startswith('Alexandre Dumas'):
-            author_name = 'Alexandre Dumas-fils'
+        if author_name.startswith("Alexandre Dumas"):
+            author_name = "Alexandre Dumas-fils"
 
         quotes.append(
             {

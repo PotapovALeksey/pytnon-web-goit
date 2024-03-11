@@ -4,19 +4,17 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
 class RegisterForm(UserCreationForm):
-    username = forms.CharField(max_length=100,
-                               required=True,
-                               widget=forms.TextInput())
+    username = forms.CharField(max_length=100, required=True, widget=forms.TextInput())
 
-    password1 = forms.CharField(max_length=50,
-                                required=True,
-                                widget=forms.PasswordInput())
-    password2 = forms.CharField(max_length=50,
-                                required=True,
-                                widget=forms.PasswordInput())
+    password1 = forms.CharField(
+        max_length=50, required=True, widget=forms.PasswordInput()
+    )
+    password2 = forms.CharField(
+        max_length=50, required=True, widget=forms.PasswordInput()
+    )
 
 
 class LoginForm(AuthenticationForm):
     class Meta:
         model = User
-        fields = ['username', 'password']
+        fields = ["username", "password"]
