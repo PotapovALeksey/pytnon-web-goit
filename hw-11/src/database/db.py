@@ -13,5 +13,6 @@ async def get_db():
     except Exception as error:
         print(error)
         await session.rollback()
+        raise error
     finally:
         await session.close()
