@@ -1,6 +1,5 @@
-from fastapi import APIRouter, Depends, Path, HTTPException, status
+from fastapi import APIRouter, Depends, Path, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-
 import src.repository.contact as contact_repository
 from src.database.db import get_db
 from src.schemas.base import SingleResponseSchema, ListResponseSchema
@@ -10,11 +9,26 @@ from src.util.get_response_data import get_response_data
 contacts_router = APIRouter(prefix="/contacts", tags=["contacts"])
 
 
+@contacts_router.get("/birthday", response_model=ListResponseSchema[ContactSchema])
+async def get_contacts_birthday(
+    birthday_days: int = Query(description="Number of days"),
+    db: AsyncSession = Depends(get_db),
+):
+    contacts = await contact_repository.get_contacts_birthday(birthday_days, db)
+
+    return get_response_data(contacts, len(contacts))
+
+
 @contacts_router.get("", response_model=ListResponseSchema[ContactSchema])
 async def get_contacts(
-    offset: int = 0, limit: int = 50, db: AsyncSession = Depends(get_db)
+    search: str = Query(
+        description="Search by text in - name, surname, email", default=""
+    ),
+    offset: int = 0,
+    limit: int = 50,
+    db: AsyncSession = Depends(get_db),
 ):
-    contacts, total = await contact_repository.get_contacts(offset, limit, db)
+    contacts, total = await contact_repository.get_contacts(offset, limit, search, db)
 
     return get_response_data(contacts, total)
 

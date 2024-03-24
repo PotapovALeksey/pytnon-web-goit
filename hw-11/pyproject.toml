@@ -8,12 +8,11 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "3.11.7"
 fastapi = "0.110.0"
-uvicorn = "0.28.0"
+uvicorn = "0.29.0"
 sqlalchemy = "2.0.28"
 python-multipart = "0.0.9"
 asyncpg = "0.29.0"
-alembic = "^1.13.1"
-greenlet = "^3.0.3"
+alembic = "1.13.1"
 
 
 [build-system]

@@ -5,10 +5,31 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.entity import Contact
 from src.schemas.contacts import ContactBaseSchema, ContactSchema
+from src.util.is_string import is_string
+
+
+async def get_contacts_birthday(
+    birthday_days: int, db: AsyncSession
+) -> list[ContactSchema]:
+    today = datetime.date.today()
+
+    query = (
+        select(Contact)
+        .filter_by(deleted_at=None)
+        .filter(
+            Contact.birthday.between(
+                today, today + datetime.timedelta(days=birthday_days)
+            )
+        )
+    )
+
+    contacts = await db.execute(query)
+
+    return contacts.scalars().all()
 
 
 async def get_contacts(
-    offset: int, limit: int, db: AsyncSession
+    offset: int, limit: int, search: str, db: AsyncSession
 ) -> (int, list[ContactSchema]):
     count_query = await db.execute(
         select(func.count(Contact.id)).filter_by(deleted_at=None)
@@ -16,6 +37,14 @@ async def get_contacts(
     count = count_query.scalar_one_or_none()
 
     query = select(Contact).filter_by(deleted_at=None).limit(limit).offset(offset)
+
+    if is_string(search):
+        query = query.filter(
+            Contact.name.ilike(f"%{search}%")
+            | Contact.surname.ilike(f"%{search}%")
+            | Contact.email.ilike(f"%{search}%")
+        )
+
     contacts = await db.execute(query)
 
     return contacts.scalars().all(), count
@@ -31,6 +60,7 @@ async def create_contact(body: ContactBaseSchema, db: AsyncSession):
     contact = Contact(**body.model_dump(exclude_unset=True))
     db.add(contact)
     await db.commit()
+    await db.refresh(contact)
 
     return contact
 
@@ -45,6 +75,7 @@ async def update_contact(contact_id: int, body: ContactBaseSchema, db: AsyncSess
         contact.email = body.email
         contact.birthday = body.birthday
         await db.commit()
+        await db.refresh(contact)
 
     return contact
 
@@ -55,5 +86,6 @@ async def delete_contact(contact_id: int, db: AsyncSession):
     if contact:
         contact.deleted_at = datetime.datetime.utcnow()
         await db.commit()
+        await db.refresh(contact)
 
     return contact

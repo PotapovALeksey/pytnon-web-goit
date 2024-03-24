@@ -1,6 +1,6 @@
 from sqlalchemy.orm import mapped_column, Mapped
 from sqlalchemy import String, Date, DateTime
-from datetime import datetime
+from datetime import datetime, date
 from src.entity.base import Base
 
 
@@ -12,7 +12,7 @@ class Contact(Base):
     surname: Mapped[str] = mapped_column(String(50))
     email: Mapped[str]
     phone: Mapped[str] = mapped_column(String(20))
-    birthday: Mapped[str] = mapped_column(Date())
+    birthday: Mapped[date] = mapped_column(Date())
 
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
     updated_at: Mapped[datetime] = mapped_column(
