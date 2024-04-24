@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "hw-12"
+version = "0.1.0"
+description = ""
+authors = ["PotapovALeksey <37796979+PotapovALeksey@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.7"
+fastapi = "0.110.2"
+uvicorn = "0.29.0"
+sqlalchemy = "2.0.29"
+python-multipart = "0.0.9"
+asyncpg = "0.29.0"
+alembic = "1.13.1"
+pydantic = {extras = ["email"], version = "2.7.0"}
+passlib = {extras = ["bcrypt"], version = "1.7.4"}
+fastapi-jwt-auth = "0.5.0"
+python-jose = "3.3.0"
+greenlet = "^3.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
