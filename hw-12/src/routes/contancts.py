@@ -3,12 +3,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import src.repository.contact as contact_repository
 from src.database.db import get_db
 from src.entity import User
+from src.entity.user import Role
 from src.schemas.base import SingleResponseSchema, ListResponseSchema
-from src.schemas.contacts import ContactSchema, ContactBaseSchema
+from src.schemas.contacts import ContactSchema, ContactBaseSchema, ContactAdminSchema
+from src.services.access import Access
 from src.util.get_response_data import get_response_data
 from src.services.auth import auth_service
 
 contacts_router = APIRouter(prefix="/contacts", tags=["contacts"])
+is_user_admin = Access([Role.admin])
 
 
 @contacts_router.get("/birthday", response_model=ListResponseSchema[ContactSchema])
@@ -37,9 +40,27 @@ async def get_contacts(
     contacts, total = await contact_repository.get_contacts(
         offset, limit, search, current_user.id, db
     )
-    print("contacts: ", contacts)
-    print("total: ", total)
-    print("get_response_data(contacts, total)", get_response_data(contacts, total))
+
+    return get_response_data(contacts, total)
+
+
+@contacts_router.get(
+    "/all",
+    response_model=ListResponseSchema[ContactAdminSchema],
+    dependencies=[Depends(auth_service.get_current_user), Depends(is_user_admin)],
+)
+async def get_contacts_all(
+    search: str = Query(
+        description="Search by text in - name, surname, email", default=""
+    ),
+    offset: int = 0,
+    limit: int = 50,
+    db: AsyncSession = Depends(get_db),
+):
+    contacts, total = await contact_repository.get_contacts(
+        offset, limit, search, None, db
+    )
+
     return get_response_data(contacts, total)
 
 
@@ -61,7 +82,9 @@ async def get_contact(
     return get_response_data(contact)
 
 
-@contacts_router.post("", response_model=ContactSchema)
+@contacts_router.post(
+    "", response_model=ContactSchema, status_code=status.HTTP_201_CREATED
+)
 async def create_contact(
     body: ContactBaseSchema,
     current_user: User = Depends(auth_service.get_current_user),

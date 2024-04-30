@@ -1,11 +1,17 @@
+import enum
 from datetime import datetime
 
-from sqlalchemy import UUID, String, DateTime
+from sqlalchemy import UUID, String, DateTime, Enum
 from sqlalchemy.orm import Mapped, mapped_column
 import uuid
 
 
 from .base import Base
+
+
+class Role(enum.Enum):
+    admin = "admin"
+    user = "user"
 
 
 class User(Base):
@@ -17,6 +23,7 @@ class User(Base):
     email = mapped_column(String(150), nullable=False, unique=True)
     password = mapped_column(String(255), nullable=False)
     refresh_token = mapped_column(String(255), nullable=True)
+    role = mapped_column("role", Enum(Role), default=Role.user)
 
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
     updated_at: Mapped[datetime] = mapped_column(

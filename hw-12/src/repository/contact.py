@@ -29,19 +29,18 @@ async def get_contacts_birthday(
 
 
 async def get_contacts(
-    offset: int, limit: int, search: str, user_id: str, db: AsyncSession
+    offset: int, limit: int, search: str, user_id: str | None, db: AsyncSession
 ) -> (int, list[ContactSchema]):
-    count_query = await db.execute(
-        select(func.count(Contact.id)).filter_by(user_id=user_id, deleted_at=None)
-    )
-    count = count_query.scalar_one_or_none()
+    count_query = select(func.count(Contact.id)).filter_by(deleted_at=None)
 
-    query = (
-        select(Contact)
-        .filter_by(user_id=user_id, deleted_at=None)
-        .limit(limit)
-        .offset(offset)
-    )
+    query = select(Contact).filter_by(deleted_at=None).limit(limit).offset(offset)
+
+    if user_id is not None:
+        query = query.filter_by(user_id=user_id)
+        count_query = count_query.filter_by(user_id=user_id)
+    else:
+        query = query.filter(Contact.user_id.is_not(None))
+        count_query = count_query.filter(Contact.user_id.is_not(None))
 
     if is_string(search):
         query = query.filter(
@@ -50,9 +49,10 @@ async def get_contacts(
             | Contact.email.ilike(f"%{search}%")
         )
 
+    count = await db.execute(count_query)
     contacts = await db.execute(query)
 
-    return contacts.scalars().all(), count
+    return contacts.scalars().all(), count.scalar_one_or_none()
 
 
 async def get_contact(contact_id: int, user_id: str, db: AsyncSession):

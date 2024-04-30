@@ -1,5 +1,7 @@
 from datetime import datetime
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, UUID4
+
+from src.entity.user import Role
 
 
 class UserInputSchema(BaseModel):
@@ -8,8 +10,9 @@ class UserInputSchema(BaseModel):
 
 
 class UserSchema(BaseModel):
-    id: str
+    id: UUID4
     email: str
+    role: Role
     created_at: datetime
     updated_at: datetime
 

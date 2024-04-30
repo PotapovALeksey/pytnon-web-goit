@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Security
-from fastapi.encoders import jsonable_encoder
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dataclasses import dataclass
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -28,12 +27,15 @@ def get_token_response(email: str):
 
     access_token = auth_service.create_access_token(data)
     refresh_token = auth_service.create_refresh_token(data)
-    print("access_token: ", access_token)
-    print("refresh_token: ", refresh_token)
+
     return TokenResponse(access_token, refresh_token)
 
 
-@auth_router.post("/signup", response_model=SingleResponseSchema[UserSchema])
+@auth_router.post(
+    "/signup",
+    response_model=SingleResponseSchema[UserSchema],
+    status_code=status.HTTP_201_CREATED,
+)
 async def signup(body: UserInputSchema, db: AsyncSession = Depends(get_db)):
     user = await user_repository.get_user_by_email(body.email, db)
 
@@ -50,7 +52,7 @@ async def signup(body: UserInputSchema, db: AsyncSession = Depends(get_db)):
         db,
     )
 
-    return get_response_data(jsonable_encoder(new_user))
+    return get_response_data(new_user)
 
 
 @auth_router.post("/signin", response_model=SingleResponseSchema[AuthTokenSchema])
