@@ -10,7 +10,7 @@ user_data = {"email": "ivan@gmail.com", "password": "12345678"}
 
 
 def test_signup(client, monkeypatch):
-    monkeypatch.setattr('src.services.mail.Mail.send_mail', MagicMock())
+    monkeypatch.setattr('src.services.mail.mail_service.send_mail', MagicMock())
 
     response = client.post(
         f'{AUTH_ROUTE_PREFIX}/signup',
@@ -25,17 +25,14 @@ def test_signup(client, monkeypatch):
 
 
 def test_signup_repeat(client, monkeypatch):
-    monkeypatch.setattr('src.services.mail.Mail.send_mail', MagicMock())
-    print('!!!!abc')
+    monkeypatch.setattr('src.services.mail.mail_service.send_mail', MagicMock())
+
     response = client.post(
         f'{AUTH_ROUTE_PREFIX}/signup',
         json=user_data
     )
 
-    print('!!!response.status_code!!!: ', response.status_code)
+    assert response.status_code == status.HTTP_409_CONFLICT
+    message = response.json()['message']
+    assert message == Messages.ACCOUNT_EXIST
 
-    # assert response.status_code == status.HTTP_409_CONFLICT
-
-    # detail = response.json()['detail']
-    # print('!!!!!!detail: ', detail)
-    # assert detail == Messages.ACCOUNT_EXIST

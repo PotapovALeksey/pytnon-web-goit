@@ -48,8 +48,8 @@ def client():
         try:
             yield session
         except Exception as error:
-            print('!!!error!!!: ', error)
             await session.rollback()
+            raise error
         finally:
             await session.close()
 
