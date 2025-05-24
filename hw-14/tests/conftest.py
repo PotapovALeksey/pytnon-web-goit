@@ -33,6 +33,7 @@ def init_models_wrap():
             await conn.run_sync(Base.metadata.create_all)
         async with TestingSessionLocal() as session:
             hash_password = auth_service.get_password_hash(test_user["password"])
+
             current_user = User(email=test_user["email"], password=hash_password,
                                 is_confirmed=True, role="admin")
             session.add(current_user)
@@ -58,7 +59,6 @@ def client():
     yield TestClient(app)
 
 
-@pytest_asyncio.fixture()
-async def get_token():
-    token = await auth_service.create_access_token(data={"sub": test_user["email"]})
-    return token
+@pytest.fixture(scope="module")
+def token():
+    return auth_service.create_access_token(data={"sub": test_user["email"]})

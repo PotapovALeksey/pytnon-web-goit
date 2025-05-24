@@ -6,3 +6,5 @@ class APIRoutes:
 
 class Messages:
     ACCOUNT_EXIST = "Account is already exist"
+    EMAIL_NOT_CONFIRMED = "Email not confirmed"
+    INVALID_CREDENTIALS = "Invalid email or password"

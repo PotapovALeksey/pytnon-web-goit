@@ -107,17 +107,17 @@ async def signin(body: UserInputSchema, db: AsyncSession = Depends(get_db)):
 
     if user is None:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail=Messages.INVALID_CREDENTIALS
         )
 
     if not user.is_confirmed:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Email not confirmed"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail=Messages.EMAIL_NOT_CONFIRMED
         )
 
     if not auth_service.verify_password(body.password, user.password):
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail=Messages.INVALID_CREDENTIALS
         )
 
     token_response = get_token_response(user.email)
@@ -175,8 +175,7 @@ async def confirm_email(token: str, db: AsyncSession = Depends(get_db)):
     :rtype: SingleResponseSchema[None]
     """
     email = auth_service.get_email_from_token(token)
-    print('token: ', token)
-    print('email: ', email)
+
     user = await user_repository.get_user_by_email(email, db)
 
     if user is None:

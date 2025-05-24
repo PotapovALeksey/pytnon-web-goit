@@ -138,7 +138,7 @@ async def get_contact(
 
 
 @contacts_router.post(
-    "", response_model=ContactSchema, status_code=status.HTTP_201_CREATED,
+    "", response_model=SingleResponseSchema[ContactSchema], status_code=status.HTTP_201_CREATED,
     dependencies=[Depends(RateLimiter(times=15, seconds=30))]
 )
 async def create_contact(
@@ -156,10 +156,10 @@ async def create_contact(
     """
     new_contact = await contact_repository.create_contact(body, current_user.id, db)
 
-    return new_contact
+    return get_response_data(new_contact)
 
 
-@contacts_router.patch("/{contact_id}", response_model=ContactSchema,
+@contacts_router.patch("/{contact_id}", response_model=SingleResponseSchema[ContactSchema],
                        dependencies=[Depends(RateLimiter(times=15, seconds=30))])
 async def updated_contact(
         body: ContactBaseSchema,
@@ -187,10 +187,10 @@ async def updated_contact(
             status_code=status.HTTP_404_NOT_FOUND, detail="Contact is not found"
         )
 
-    return contact
+    return get_response_data(contact)
 
 
-@contacts_router.delete("/{contact_id}", response_model=ContactSchema,
+@contacts_router.delete("/{contact_id}", response_model=SingleResponseSchema[ContactSchema],
                         dependencies=[Depends(RateLimiter(times=15, seconds=30))])
 async def delete_contact(
         contact_id: int = Path(description="id of the contact", gt=0),
@@ -215,4 +215,4 @@ async def delete_contact(
             status_code=status.HTTP_404_NOT_FOUND, detail="Contact is not found"
         )
 
-    return contact
+    return get_response_data(contact)

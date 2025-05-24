@@ -5,6 +5,7 @@ from fastapi_limiter import FastAPILimiter
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import JSONResponse, RedirectResponse
+from contextlib import asynccontextmanager
 
 from src.config.constants import APIRoutes
 from src.database.cache import get_cache
@@ -13,7 +14,14 @@ from src.routes.auth import auth_router
 from src.routes.contancts import contacts_router
 from src.routes.users import users_router
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    redis = await get_cache()
+    await FastAPILimiter.init(redis)
+    yield
+
+app = FastAPI(lifespan=lifespan)
 
 origins = [
     "http://localhost:3000"
@@ -27,12 +35,6 @@ app.add_middleware(
     allow_methods=['*'],
     allow_headers=['*'],
 )
-
-
-@app.on_event("startup")
-async def startup():
-    redis = await get_cache()
-    await FastAPILimiter.init(redis)
 
 
 @app.exception_handler(HTTPException)
